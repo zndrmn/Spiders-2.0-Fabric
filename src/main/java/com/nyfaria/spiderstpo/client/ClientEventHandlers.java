@@ -2,8 +2,7 @@ package com.nyfaria.spiderstpo.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.nyfaria.spiderstpo.common.entity.mob.IClimberEntity;
 import com.nyfaria.spiderstpo.common.entity.mob.Orientation;
 import com.nyfaria.spiderstpo.common.entity.mob.PathingTarget;
@@ -16,6 +15,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.AxisAngle4f;
+import org.joml.Matrix4f;
 
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class ClientEventHandlers {
 
 			matrixStack.translate(x, y, z);
 
-			matrixStack.mulPose(Vector3f.YP.rotationDegrees(renderOrientation.yaw));
-			matrixStack.mulPose(Vector3f.XP.rotationDegrees(renderOrientation.pitch));
-			matrixStack.mulPose(Vector3f.YP.rotationDegrees((float) Math.signum(0.5f - orientation.componentY - orientation.componentZ - orientation.componentX) * renderOrientation.yaw));
+			matrixStack.mulPose(Axis.YP.rotationDegrees(renderOrientation.yaw));
+			matrixStack.mulPose(Axis.XP.rotationDegrees(renderOrientation.pitch));
+			matrixStack.mulPose(Axis.YP.rotationDegrees((float) Math.signum(0.5f - orientation.componentY - orientation.componentZ - orientation.componentX) * renderOrientation.yaw));
 		}
 	}
 
@@ -58,9 +59,9 @@ public class ClientEventHandlers {
 				float y = climber.getAttachmentOffset(Direction.Axis.Y, partialTicks) - (float) renderOrientation.normal.y * verticalOffset;
 				float z = climber.getAttachmentOffset(Direction.Axis.Z, partialTicks) - (float) renderOrientation.normal.z * verticalOffset;
 
-				matrixStack.mulPose(Vector3f.YP.rotationDegrees(-(float) Math.signum(0.5f - orientation.componentY - orientation.componentZ - orientation.componentX) * renderOrientation.yaw));
-				matrixStack.mulPose(Vector3f.XP.rotationDegrees(-renderOrientation.pitch));
-				matrixStack.mulPose(Vector3f.YP.rotationDegrees(-renderOrientation.yaw));
+				matrixStack.mulPose(Axis.YP.rotationDegrees(-(float) Math.signum(0.5f - orientation.componentY - orientation.componentZ - orientation.componentX) * renderOrientation.yaw));
+				matrixStack.mulPose(Axis.XP.rotationDegrees(-renderOrientation.pitch));
+				matrixStack.mulPose(Axis.YP.rotationDegrees(-renderOrientation.yaw));
 
 				if(Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes()) {
 					LevelRenderer.renderLineBox(matrixStack, bufferIn.getBuffer(RenderType.LINES), new AABB(0, 0, 0, 0, 0, 0).inflate(0.2f), 1.0f, 1.0f, 1.0f, 1.0f);
